@@ -7,6 +7,11 @@ class IdeasController < ApplicationController
     @ideas = Idea.all
   end
 
+  # GET /ideas/me
+  def filter_by_me
+    @ideas = Idea.where(user_id: current_user.id)
+  end
+
   # GET /ideas/1
   # GET /ideas/1.json
   def show
@@ -27,6 +32,7 @@ class IdeasController < ApplicationController
   # POST /ideas.json
   def create
     @idea = Idea.new(idea_params)
+    @idea.user_id = current_user.id
 
     respond_to do |format|
       if @idea.save
